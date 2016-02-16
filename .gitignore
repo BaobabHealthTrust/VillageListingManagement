@@ -24,3 +24,4 @@ nbproject
 Gemfile.lock
 .idea/*
 .ruby-version
+public/touchscreentoolkit/*
