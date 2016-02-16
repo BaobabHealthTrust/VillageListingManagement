@@ -1,0 +1,41 @@
+development: &development
+  protocol: 'http'
+  host: localhost
+  port: 5984
+  prefix: dde2
+  suffix: development
+  username:
+  password:
+  sitecode: MLS
+  region: Centre  
+  mode: master  # master/proxy
+  masterport: 3000  # Port where application is running from for background processes
+  pagesize: 10
+  app_username:
+  app_password:
+
+test:
+  <<: *development
+  suffix: test
+
+production:
+  protocol: 'http'
+  host: localhost
+  port: 5984
+  prefix: dde2
+  suffix: production
+  username: 
+  password: 
+  sitecode: MLS
+  region: Centre   
+  mode: master  # master/proxy
+  masterport: 3000  # Port where application is running from for background processes
+  pagesize: 10
+  app_username:
+  app_password:
+  
+networks:
+  username: username
+  password: password
+  host: ipaddress
+  path: /path
