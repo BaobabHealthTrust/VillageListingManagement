@@ -16,8 +16,9 @@ class DemographicsController < ApplicationController
 
   def districts
     district_name = params[:district_name]
+    region = params[:region].sub('Region','').strip
 
-    names = (District.all.each || []).map do |district|
+    names = (District.by_region.key(region).each || []).map do |district|
       unless district_name.blank?
         next unless district.name.match(/#{district_name}/i)
         district.name

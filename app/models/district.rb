@@ -13,6 +13,7 @@ class District < CouchRest::Model::Base
   design do
     view :by_district_code
     view :by_name
+    view :by_region
   end
 
   
