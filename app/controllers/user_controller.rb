@@ -20,4 +20,8 @@ class UserController < ApplicationController
     render :text => [].to_json
   end
 
+  def usernames
+    render :text => [].to_json
+  end
+
 end

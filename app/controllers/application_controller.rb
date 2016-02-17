@@ -9,7 +9,10 @@ class ApplicationController < ActionController::Base
 
   def aut
     if session[:user_id].blank? 
-      if params[:remote_user].blank? 
+      if not params[:user].blank?
+        user = User.find(params[:user]['username'])
+        session[:user_id] = user.id 
+      else
         respond_to do |format|
           format.html { redirect_to '/login' }
         end
