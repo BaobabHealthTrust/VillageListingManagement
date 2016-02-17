@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get '/login' => 'user#login'
   post '/login' => 'user#login'
   get '/logout' => 'user#logout'
+  post '/remote_login' => 'user#remote_login'
   ################# user ends ###################################################
 
   # The priority is based upon order of creation: first created -> highest priority.
