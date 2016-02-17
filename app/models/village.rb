@@ -13,4 +13,12 @@ class Village < CouchRest::Model::Base
     view :by_name
   end
 
+  design do
+    view :by_ta_id_and_name
+  end
+
+  design do
+    view :by_ta_id
+  end
+
 end

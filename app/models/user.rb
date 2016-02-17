@@ -24,7 +24,29 @@ class User < CouchRest::Model::Base
   
   timestamps!
 
-  cattr_accessor :current_user
+  cattr_accessor :current
+  cattr_accessor :search_str
+
+   ########################## views start ####################################
+   design do
+    view :by__id
+   end
+=begin
+   design do
+    # active usernames
+    view :active_usernames,
+         :map => "function(doc){
+            if (doc['type'] == 'User' && doc['active'] == false && doc['username'].match(/#{User.search_str}/i)){
+              emit(doc._id, {username: doc._id ,first_name: doc.first_name, 
+              last_name: doc.last_name, role: doc.role, creator: doc.creator, 
+              updated_at: doc.updated_at});
+            }
+          }"
+
+   end
+=end
+   ########################## views end ####################################
+
 
   def has_role?(role_name)
     self.current_user.role == role_name ? true : false
@@ -50,5 +72,5 @@ class User < CouchRest::Model::Base
     @password = BCrypt::Password.create(new_password)
     self.password_hash = @password
   end
- 
+
 end

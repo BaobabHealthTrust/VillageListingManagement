@@ -14,4 +14,20 @@ class TraditionalAuthority < CouchRest::Model::Base
     view :by_name
   end
 
+  design do
+    view :by_district_id_and_name
+  end
+
+  design do
+    view :by_region_and_name
+  end
+
+  design do
+    view :by_region
+  end
+
+  design do
+    view :by_district_id
+  end
+
 end

@@ -10,9 +10,20 @@ Rails.application.routes.draw do
   post '/remote_login' => 'user#remote_login'
   
   post '/get_usernames' => 'user#usernames'
+  get '/get_usernames' => 'user#usernames'
   post '/get_first_names' => 'user#first_names'
   post '/get_last_names' => 'user#last_names'
+  
+  post '/remote_create_user' => 'user#create'
   ################# user ends ###################################################
+
+  ################# demographics start ###################################################
+
+  post 'demographics/countries' 
+  post 'demographics/districts'
+  post 'demographics/traditional_authorities'
+  post 'demographics/villages'
+  ################# demographics ends ###################################################
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
