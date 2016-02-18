@@ -46,8 +46,14 @@ end
 
 
 districts_with_ta_and_villages = {}
-CSV.foreach("#{Rails.root}/app/assets/data/districts_with_ta_and_villages.csv", :headers => true).each_with_index do |row, i|
-  district_name = row[0].gsub('-',' ').strip.titleize ; ta_name = row[1] ; village_name = row[2]
+district_ta_and_villages_json = JSON.parse(`cat #{Rails.root}/app/assets/data/districts.json`)
+
+(district_ta_and_villages_json || {}).each do |raw_district_name, ta_and_thier_villages|
+  if raw_district_name.match(/-/)
+    district_name = raw_district_name.strip.capitalize
+  else
+    district_name = raw_district_name.strip.titleize
+  end
   puts "setting up TAs and villages for .......... #{district_name}"
 
   district = District.find_by_name(district_name)
@@ -68,8 +74,13 @@ CSV.foreach("#{Rails.root}/app/assets/data/districts_with_ta_and_villages.csv", 
   end
 
   districts_with_ta_and_villages[district.name] = {} if districts_with_ta_and_villages[district.name].blank?
-  districts_with_ta_and_villages[district.name][ta_name] = [] if districts_with_ta_and_villages[district.name][ta_name].blank?
-  districts_with_ta_and_villages[district.name][ta_name] << village_name
+  (district_ta_and_villages_json[district.name].keys || []).each do |ta_name|
+    districts_with_ta_and_villages[district.name][ta_name] = [] if districts_with_ta_and_villages[district.name][ta_name].blank?
+    (district_ta_and_villages_json[district.name][ta_name] || []).each do |village_name|
+      districts_with_ta_and_villages[district.name][ta_name] << village_name
+    end
+  end
+
 
 end
 
@@ -106,8 +117,8 @@ if user.blank?
 	user.last_name = "Administrator"
 	user.role = "admin"
 	user.district_id = District.find_by_name('Lilongwe').id
-	user.ta_id = TraditionalAuthority.find_by_name('Chadza').id
-	user.village_id = Village.find_by_name('Mtema').id
+	user.ta_id = TraditionalAuthority.find_by_name('Mtema').id
+	user.village_id = Village.find_by_name('Kanyoza').id
 	user.save
   puts "User created succesfully!"
 else

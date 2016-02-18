@@ -23,6 +23,9 @@ Rails.application.routes.draw do
   post 'demographics/districts'
   post 'demographics/traditional_authorities'
   post 'demographics/villages'
+
+  post 'demographics/given_names'
+  post 'demographics/family_names'
   ################# demographics ends ###################################################
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -59,4 +59,23 @@ class DemographicsController < ApplicationController
     render :text => names.compact.to_json
   end
 
+  #################### DDE 2 names ######################################################
+  def given_names
+    paramz = {name: 'given_name', given_name: params[:search_str]}
+    server_address = '127.0.0.1:3002'
+    uri = "http://#{server_address}/person_names.json/"
+    names = RestClient.post(uri,paramz)
+
+    render :text => names
+  end
+
+  def family_names
+    paramz = {name: 'family_name', family_name: params[:search_str]}
+    server_address = '127.0.0.1:3002'
+    uri = "http://#{server_address}/person_names.json/"
+    names = RestClient.post(uri,paramz)
+
+    render :text => names
+  end
+  #################### DDE 2 names ends ##################################################
 end
