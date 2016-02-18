@@ -12,6 +12,7 @@ config/secrets.yml
 *.swo
 *.txt
 *.pid.lock
+*.pid
 notes
 doc
 development.sql
