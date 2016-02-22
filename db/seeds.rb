@@ -112,7 +112,7 @@ user = User.find('admin')
 if user.blank?
 	user = User.new()
 	user.username = "admin"
-	user.password_hash = "p@ssword!"
+	user.password_hash = "letmein"
 	user.first_name = "Systm"
 	user.last_name = "Administrator"
 	user.role = "admin"
@@ -125,5 +125,5 @@ else
   puts "User already exists"
 end
 
-puts "Login: username: admin password: p@ssword!"
+puts "Login: username: admin password: letmein"
 
