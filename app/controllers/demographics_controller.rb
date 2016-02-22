@@ -56,6 +56,7 @@ class DemographicsController < ApplicationController
         village.name
       end
     end
+
     render :text => names.compact.to_json
   end
 
