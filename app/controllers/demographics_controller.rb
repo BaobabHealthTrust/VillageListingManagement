@@ -63,8 +63,8 @@ class DemographicsController < ApplicationController
   #################### DDE 2 names ######################################################
   def given_names
     paramz = {name: 'given_name', given_name: params[:search_str]}
-    server_address = '127.0.0.1:3002'
-    uri = "http://#{server_address}/person_names.json/"
+    dde_server_address = YAML.load_file("#{Rails.root}/config/dde_connection.yml")[Rails.env]["dde_server"] rescue (raise raise "dde_server_address not set in dde_connection.yml")
+    uri = "http://#{dde_server_address}/person_names.json/"
     names = RestClient.post(uri,paramz)
 
     render :text => names
@@ -72,8 +72,8 @@ class DemographicsController < ApplicationController
 
   def family_names
     paramz = {name: 'family_name', family_name: params[:search_str]}
-    server_address = '127.0.0.1:3002'
-    uri = "http://#{server_address}/person_names.json/"
+    dde_server_address = YAML.load_file("#{Rails.root}/config/dde_connection.yml")[Rails.env]["dde_server"] rescue (raise raise "dde_server_address not set in dde_connection.yml")
+    uri = "http://#{dde_server_address}/person_names.json/"
     names = RestClient.post(uri,paramz)
 
     render :text => names
