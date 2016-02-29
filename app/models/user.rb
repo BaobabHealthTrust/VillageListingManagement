@@ -14,6 +14,7 @@ class User < CouchRest::Model::Base
  
   property :first_name, String
   property :last_name, String
+  property :gender, String
   property :password_hash, String
   property :active, TrueClass, :default => false
   property :role, String
@@ -53,6 +54,11 @@ class User < CouchRest::Model::Base
   end
 
   before_save do |pass|
+    self.password_hash = BCrypt::Password.create(self.password_hash) if not self.password_hash.blank?
+    self.creator = 'admin' if self.creator.blank?
+  end
+ 
+  before_update do |pass|
     self.password_hash = BCrypt::Password.create(self.password_hash) if not self.password_hash.blank?
     self.creator = 'admin' if self.creator.blank?
   end

@@ -61,20 +61,69 @@ class UserController < ApplicationController
   end
 
   def create
+
+    district =  District.find_by_name(params[:location]['addresses']['address2'])
+    ta = TraditionalAuthority.by_district_id_and_name.key([district.id,params[:location]['addresses']['county_district']]).each.first
+    village = Village.by_ta_id_and_name.key([ta.id,params[:location]['addresses']['neighborhood_cell']]).each.first
+
     username = params[:new_user]['username']
     password =  params[:new_user]['password']
     first_name =  params[:new_user]['first_name']
     last_name =  params[:new_user]['last_name']
     role =  params[:new_user]['role']
-    district_id =  District.find_by_name(params[:user]['district']).id
-    ta_id =  TraditionalAuthority.find_by_name(params[:user]['ta']).id
-    village_id = Village.find_by_name(params[:user]['village']).id
 
-    user = User.create(username: username, password_hash: password,
+    user = User.create(username: username, password_hash: password, gender: params[:new_user]['gender'],
       first_name: first_name, last_name: last_name, role: role, creator: params[:user]['username'],
-      district_id: district_id, ta_id: ta_id, village_id: village_id)
+      district_id: district.id, ta_id: ta.id, village_id: village.id)
 
     render :text => user.to_json and return
   end
 
+  def list
+    users = []
+    User.all.map do |user|
+      users << { username: user.id, first_name: user.first_name,
+      last_name: user.last_name, gender: user.gender,
+      ta: TraditionalAuthority.find(user.ta_id).name,
+      village: Village.find(user.village_id).name,
+      district: District.find(user.district_id).name }
+    end
+    render text: users.to_json and return
+  end
+
+  def change_password
+    user = User.find(params[:username])
+    user.update_attributes(password_hash: params[:new_password])
+    render text: user.to_s and return
+  end
+
+  def update
+
+    district =  District.find_by_name(params[:location]['addresses']['address2']) rescue nil
+    user = User.find(params[:username])
+    unless district.blank?
+      ta = TraditionalAuthority.by_district_id_and_name.key([district.id,params[:location]['addresses']['county_district']]).each.first
+      village = Village.by_ta_id_and_name.key([ta.id,params[:location]['addresses']['neighborhood_cell']]).each.first
+    
+      username = params[:new_user]['username']
+      password =  params[:new_user]['password']
+      first_name =  params[:new_user]['first_name']
+      last_name =  params[:new_user]['last_name']
+      role =  params[:new_user]['role'] == 'Administrator' ? 'admin' : params[:new_user]['role'].downcase
+
+      user.update_attributes(username: username, gender: params[:new_user]['gender'],
+        first_name: first_name, last_name: last_name, role: role, creator: params[:user]['username'],
+        district_id: district.id, ta_id: ta.id, village_id: village.id)
+
+    else
+      username = params[:new_user]['username']
+      password =  params[:new_user]['password']
+      first_name =  params[:new_user]['first_name']
+      last_name =  params[:new_user]['last_name']
+
+      user.update_attributes(username: username, first_name: first_name, 
+        last_name: last_name, creator: params[:user]['username'])
+    end
+    render :text => user.to_json and return
+  end
 end

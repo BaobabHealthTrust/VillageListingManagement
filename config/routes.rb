@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   post '/get_last_names' => 'user#last_names'
   
   post '/remote_create_user' => 'user#create'
+  post '/user_list' => 'user#list'
+  post '/remote_change_password' => 'user#change_password'
+  post '/remote_update_user' => 'user#update'
   ################# user ends ###################################################
 
   ################# demographics start ###################################################

@@ -117,6 +117,7 @@ if user.blank?
 	user.first_name = "Systm"
 	user.last_name = "Administrator"
 	user.role = "admin"
+	user.gender = "M"
 	user.district_id = District.find_by_name('Lilongwe').id
 	user.ta_id = TraditionalAuthority.find_by_name('Mtema').id
 	user.village_id = Village.find_by_name('Kanyoza').id
