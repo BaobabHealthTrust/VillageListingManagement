@@ -18,6 +18,7 @@ CSV.foreach("#{Rails.root}/app/assets/data/health_facilities.csv", :headers => t
   facility_location = row[7] ; latitude = row[8] ; longitude = row[9]
   next if district_name.blank?
   region = 'Southern' if region.match(/south/i)
+  district_name = "Nkhata-bay" if district_name.match(/nkhata/i)
 
   location_tags << row[5]
   districts[district_name] = [] if districts[district_name].blank?
@@ -31,10 +32,10 @@ end
 
 puts "Creating districts ...."
 (districts.keys || []).each do |district_name|
-  district = District.find_by_name(district_name)
+  district = District.find_by_name(district_name.capitalize)
   if district.blank?
     district = District.new()
-    district.name = district_name
+    district.name = district_name.capitalize
     district.district_code = districts[district_name].first[0]
     district.region =  districts[district_name].first[3]
     district.save
@@ -52,7 +53,7 @@ district_ta_and_villages_json = JSON.parse(`cat #{Rails.root}/app/assets/data/di
   if raw_district_name.match(/-/)
     district_name = raw_district_name.strip.capitalize
   else
-    district_name = raw_district_name.strip.titleize
+    district_name = raw_district_name.strip
   end
   puts "setting up TAs and villages for .......... #{district_name}"
 
