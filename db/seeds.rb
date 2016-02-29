@@ -16,9 +16,9 @@ CSV.foreach("#{Rails.root}/app/assets/data/health_facilities.csv", :headers => t
   region = row[4].split(' ')[0] rescue nil
   facility_type = row[5] ; description = row[6]
   facility_location = row[7] ; latitude = row[8] ; longitude = row[9]
+  next if district_name.blank?
   region = 'Southern' if region.match(/south/i)
 
-  next if district_name.blank?
   location_tags << row[5]
   districts[district_name] = [] if districts[district_name].blank?
   districts[district_name] << [
