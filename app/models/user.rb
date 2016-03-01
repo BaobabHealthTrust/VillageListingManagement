@@ -4,6 +4,8 @@ class User < CouchRest::Model::Base
     
   use_database "users"
     
+  cattr_accessor :plain_password
+
   def username
    self['_id']
   end
@@ -50,19 +52,19 @@ class User < CouchRest::Model::Base
 
 
   def has_role?(role_name)
-    self.current_user.role == role_name ? true : false
+    self.current.role == role_name ? true : false
   end
 
-  before_save do |pass|
+  before_create do |pass|
     self.password_hash = BCrypt::Password.create(self.password_hash) if not self.password_hash.blank?
     self.creator = 'admin' if self.creator.blank?
   end
- 
+
   before_update do |pass|
-    self.password_hash = BCrypt::Password.create(self.password_hash) if not self.password_hash.blank?
+    self.password_hash = BCrypt::Password.create(self.password_hash) unless self.plain_password.blank?
     self.creator = 'admin' if self.creator.blank?
   end
- 
+
   def password_matches?(plain_password)
     not plain_password.nil? and self.password == plain_password
   end

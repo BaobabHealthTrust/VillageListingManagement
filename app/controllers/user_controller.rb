@@ -71,8 +71,10 @@ class UserController < ApplicationController
     first_name =  params[:new_user]['first_name']
     last_name =  params[:new_user]['last_name']
     role =  params[:new_user]['role']
+    gender = params[:new_user]['gender'] == 'Male' ? 'M' : 'F'
+    user.plain_password = password
 
-    user = User.create(username: username, password_hash: password, gender: params[:new_user]['gender'],
+    user = User.create(username: username, password_hash: password, gender: gender,
       first_name: first_name, last_name: last_name, role: role, creator: params[:user]['username'],
       district_id: district.id, ta_id: ta.id, village_id: village.id)
 
@@ -93,6 +95,7 @@ class UserController < ApplicationController
 
   def change_password
     user = User.find(params[:username])
+    user.plain_password = params[:new_password]
     user.update_attributes(password_hash: params[:new_password])
     render text: user.to_s and return
   end
@@ -105,24 +108,22 @@ class UserController < ApplicationController
       ta = TraditionalAuthority.by_district_id_and_name.key([district.id,params[:location]['addresses']['county_district']]).each.first
       village = Village.by_ta_id_and_name.key([ta.id,params[:location]['addresses']['neighborhood_cell']]).each.first
     
-      username = params[:new_user]['username']
-      password =  params[:new_user]['password']
       first_name =  params[:new_user]['first_name']
       last_name =  params[:new_user]['last_name']
       role =  params[:new_user]['role'] == 'Administrator' ? 'admin' : params[:new_user]['role'].downcase
+      gender = params[:new_user]['gender'] == 'Male' ? 'M' : 'F'
 
-      user.update_attributes(username: username, gender: params[:new_user]['gender'],
-        first_name: first_name, last_name: last_name, role: role, creator: params[:user]['username'],
-        district_id: district.id, ta_id: ta.id, village_id: village.id)
+      user.update_attributes(gender: gender, first_name: first_name, 
+        last_name: last_name, role: role, district_id: district.id, 
+        ta_id: ta.id, village_id: village.id)
 
     else
-      username = params[:new_user]['username']
       password =  params[:new_user]['password']
       first_name =  params[:new_user]['first_name']
       last_name =  params[:new_user]['last_name']
+      gender = params[:new_user]['gender'] == 'Male' ? 'M' : 'F'
 
-      user.update_attributes(username: username, first_name: first_name, 
-        last_name: last_name, creator: params[:user]['username'])
+      user.update_attributes(first_name: first_name, last_name: last_name, creator: params[:user]['username'], gender: gender)
     end
     render :text => user.to_json and return
   end
