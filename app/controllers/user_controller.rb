@@ -72,12 +72,13 @@ class UserController < ApplicationController
     last_name =  params[:new_user]['last_name']
     role =  params[:new_user]['role']
     gender = params[:new_user]['gender'] == 'Male' ? 'M' : 'F'
-    user.plain_password = password
 
-    user = User.create(username: username, password_hash: password, gender: gender,
+    user = User.create(username: username, gender: gender,
       first_name: first_name, last_name: last_name, role: role, creator: params[:user]['username'],
       district_id: district.id, ta_id: ta.id, village_id: village.id)
 
+    user.plain_password = password
+    user.update_attributes(password_hash: password)
     render :text => user.to_json and return
   end
 
