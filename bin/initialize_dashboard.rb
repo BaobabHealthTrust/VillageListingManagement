@@ -16,6 +16,7 @@ def start
 															Village.find(user.village_id).name.downcase.gsub(/\s+/, '_')			
 														]
 		file_name = "#{evr_root}/log/lastseen/#{district}__#{ta}__#{village}"
+		puts file_name
 		FileUtils.touch file_name		 
 	end
 end
