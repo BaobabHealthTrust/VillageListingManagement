@@ -107,7 +107,12 @@ CSV.foreach("#{Rails.root}/app/assets/data/countries.csv", :headers => true).eac
 end
 #####################################################################################################################
 
+puts 'Sample user Tracker'
 
+UserTracker.create(person_tracker: 'sample_tracker',
+                   username: 'sample_username')
+
+#-------------------------------------------------------------------------
 puts "Creating default user"
 user = User.find('admin')
 if user.blank?
