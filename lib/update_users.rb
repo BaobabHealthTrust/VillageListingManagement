@@ -7,13 +7,20 @@
 ##################################################################################
 
 def update_users
-	users = ['admin']
+	users = [['admin','Mtema 1'],
+	['jacob','Kanyoza']
+	]
 	
 	(users || []).each do |user|
-		user_update = User.find(user)
-		user_update.district_id = '8a72179c27706e6629b893d080a27de4'
-		user_update.ta_id = '8a72179c27706e6629b893d080be06b9'
-		user_update.village_id = '637e932be893478e1367880cae7065d5'
+		username = user[0]
+		village_name = user[1]
+		user_village = Village.find_by_name(village_name)
+		user_district = District.find_by_name('Lilongwe')
+		
+		user_update = User.find(username)
+		user_update.district_id = user_district.id
+		user_update.ta_id = user_village.ta_id
+		user_update.village_id = user_village.id
 		user_update.save
 		
 		puts "Username #{user} updated successfully \n"
