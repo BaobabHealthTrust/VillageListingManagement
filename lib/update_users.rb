@@ -139,7 +139,10 @@ def update_users
 		username = user[0]
 		village_name = user[1]
 		user_village = Village.find_by_name(village_name)
-		next if user_village.nil?
+		if user_village.nil?
+			puts "#{user} failed to update. Moving on to next user"
+			next
+		end
 		
 		user_district = District.find_by_name('Lilongwe')
 		
