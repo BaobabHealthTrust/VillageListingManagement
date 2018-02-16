@@ -139,10 +139,13 @@ def update_users
 		username = user[0]
 		village_name = user[1]
 		user_village = Village.find_by_name(village_name)
-		next if user_village.blank?
+		next if user_village.nil?
+		
 		user_district = District.find_by_name('Lilongwe')
 		
 		user_update = User.find(username)
+		next if user_update.nil?
+		
 		user_update.district_id = user_district.id
 		user_update.ta_id = user_village.ta_id
 		user_update.village_id = user_village.id
