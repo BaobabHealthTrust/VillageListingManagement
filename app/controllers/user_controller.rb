@@ -60,6 +60,30 @@ class UserController < ApplicationController
     render :text => names.to_json
   end
 
+  def details
+     
+    res = []
+    
+    User.all.each do |user|
+       
+       if(user['role'] == params["role"])
+           
+         res << { username: user['_id'],
+                  first_name: user['first_name'],
+                   last_name: user['last_name'],
+                   ta: TraditionalAuthority.find(user['ta_id']).name,  
+                  village: Village.find(user['village_id']).name,
+                  district: District.find(user['district_id']).name,
+                  role: user[:role],
+                  created_at: user['created_at']
+                }
+        end
+      end
+
+     render text: res.to_json and return
+
+  end
+
   def create
 
     district =  District.find_by_name(params[:location]['addresses']['address2'])
