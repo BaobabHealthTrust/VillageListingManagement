@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get '/user_list' => 'user#list'
   post '/user_details' => 'user#details'
   get '/user_details' => 'user#details'
+  post '/user_role' => 'user#role'
+  get '/user_role' => 'user#role'
   post '/remote_change_password' => 'user#change_password'
   post '/remote_update_user' => 'user#update'
   ################# user ends ###################################################

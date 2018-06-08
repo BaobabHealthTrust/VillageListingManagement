@@ -81,7 +81,19 @@ class UserController < ApplicationController
       end
 
      render text: res.to_json and return
+  end
 
+  def role
+
+    role = []
+    
+    User.all.each do |user|
+     
+      if(user['_id'] == params['username'])
+         role << {role: user[:role],created_at: user['created_at']}
+      end
+    end 
+    render text: role.to_json and return  
   end
 
   def create
